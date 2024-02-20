@@ -24,11 +24,17 @@ class DbConnect:
   def __del__(self):
     self.closeConn()
 
-  def select(self, sql):
+  def selectAll(self, sql):
     with self.conn.cursor() as cursor:
       cursor.execute(sql)
       result = cursor.fetchall()
       return result
+  
+  def selectOne(self, sql):
+    with self.conn.cursor() as cursor:
+      cursor.execute(sql)
+      result = cursor.fetchone()
+      return result[0]
     
   def insert(self, sql):
     with self.conn.cursor() as cursor:
