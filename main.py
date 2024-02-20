@@ -3,6 +3,24 @@ import copy
 import time
 from bs4 import BeautifulSoup as BS
 
+from dbConnect import DbConnect
+from notice import Notice
+
+conn = DbConnect()
+
+def insert_query(notice: Notice):
+  try:
+    sql = "INSERT INTO notice (num, title, href, author, noticeDate) VALUES ('{num}', '{title}', '{href}', '{author}', '{noticeDate}')".format(num=notice.num, title=notice.title, href=notice.href, author=notice.author, noticeDate=notice.noticeDate)
+    print('sql: ', sql)
+    conn.insert(sql)
+    
+  except Exception as e:
+    print('insert_query error: ', e)
+    return False
+
+  return True
+
+
 def get_notice_school():
   req = requests.get(
         "https://www.knou.ac.kr/knou/561/subview.do?epTicket=LOG"
@@ -26,6 +44,11 @@ def get_notice_school():
     print('noticeDate: ', noticeDate)
     print('')
     print('')
+    notice = Notice(title, num, href, author, noticeDate)
+    if insert_query(notice):
+      print('insert_query success')
+    else:
+      print('insert_query fail')
 
 
 def get_notice_regional_school(region):
@@ -51,6 +74,11 @@ def get_notice_regional_school(region):
     print('noticeDate: ', noticeDate)
     print('')
     print('')
+    notice = Notice(title, num, href, author, noticeDate)
+    if insert_query(notice):
+      print('insert_query success')
+    else:
+      print('insert_query fail')
 
 
 def get_notice_department(department):
@@ -77,7 +105,11 @@ def get_notice_department(department):
     print('noticeDate: ', noticeDate)
     print('')
     print('')
-
+    notice = Notice(title, num, href, author, noticeDate)
+    if insert_query(notice):
+      print('insert_query success')
+    else:
+      print('insert_query fail')
 
 if __name__ == "__main__":
   print("Hello, World!")
@@ -106,6 +138,7 @@ if __name__ == "__main__":
     print("크롤러를 실행하는데 문제가 발생했습니다.")
     print(e)
     print("크롤러를 종료합니다.")
+    conn.closeConn()
     exit(1)
 
 
