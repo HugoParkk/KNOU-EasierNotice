@@ -1,25 +1,49 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 import yaml
-
-# Load the database configuration from the file
-with open('application-secret.yaml', 'r') as f:
-    dbConfig = yaml.safe_load(f)
-
-userName = dbConfig['db']['userName']
-password = dbConfig['db']['password']
-host = dbConfig['db']['host']
-port = dbConfig['db']['port']
-dbName = dbConfig['db']['dbName']
+import pymysql
 
 
-url = "mysql+pymysql://'{userName}':'{password}'@{host}:{port}/{dbName}?charset=utf8".format(userName=userName, password=password, host=host, port=port, dbName=dbName)
-print('')
-print('url: ', url)
-print('')
+class DbConnect:
+  def __init__(self):
+    with open('application-secret.yaml', 'r') as f:
+      dbConfig = yaml.safe_load(f)
 
-engine = create_engine(url, echo=True)
+      self.userName = dbConfig['db']['userName']
+      self.password = dbConfig['db']['password']
+      self.host = dbConfig['db']['host']
+      self.port = dbConfig['db']['port']
+      self.dbName = dbConfig['db']['dbName']
 
-session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+      self.conn = pymysql.connect(host=self.host, port=self.port, user=self.userName, password=self.password, db=self.dbName, charset='utf8')
 
-print('session: ', session)
+  def getConn(self):
+    return self.conn
+  
+  def closeConn(self):
+    self.conn.close()
+
+  def __del__(self):
+    self.closeConn()
+
+  def select(self, sql):
+    with self.conn.cursor() as cursor:
+      cursor.execute(sql)
+      result = cursor.fetchall()
+      return result
+    
+  def insert(self, sql):
+    with self.conn.cursor() as cursor:
+      cursor.execute(sql)
+    self.conn.commit()
+    return cursor.lastrowid
+  
+  def update(self, sql):
+    with self.conn.cursor() as cursor:
+      cursor.execute(sql)
+    self.conn.commit()
+    return cursor.rowcount
+  
+  def delete(self, sql):
+    with self.conn.cursor() as cursor:
+      cursor.execute(sql)
+    self.conn.commit()
+    return cursor.rowcount
