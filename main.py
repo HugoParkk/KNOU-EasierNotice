@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup as BS
 from dbConnect import DbConnect
 from notice import Notice
 
+
 conn = DbConnect()
 
 noticeType = {
@@ -25,8 +26,9 @@ sources = {
     },
     "department": {
         "cs": ["cs1", "4812"],
-    }
+    },
 }
+
 
 def select_last_notice(source):
     try:
@@ -37,7 +39,7 @@ def select_last_notice(source):
         """.format(
             source=source
         )
-        
+
         # print("sql: ", sql)
 
         result = conn.selectOne(sql)
@@ -67,7 +69,7 @@ def insert_query(notice: Notice):
             type=notice.type,
             source=notice.source,
         )
-        
+
         # print("sql: ", sql)
 
         conn.insert(sql)
@@ -90,16 +92,28 @@ def get_notice_school():
     soup = BS(html, "html.parser").find("tbody")
 
     notices = soup.find_all("tr", {"class": ""})
-    notices.sort(key=lambda x: x.find("td", {"class": "td-subject"}).find("a").get("href").split("/")[4], reverse=True)
+    notices.sort(
+        key=lambda x: x.find("td", {"class": "td-subject"})
+        .find("a")
+        .get("href")
+        .split("/")[4],
+        reverse=True,
+    )
     print("notices length: ", len(notices))
 
-    maxNoticeNum: int = int(notices[0].find("td", {"class": "td-subject"}).find("a").get("href").split("/")[4])
+    maxNoticeNum: int = int(
+        notices[0]
+        .find("td", {"class": "td-subject"})
+        .find("a")
+        .get("href")
+        .split("/")[4]
+    )
     lastNoticeNum: int = select_last_notice(sources["school"]["knou"])
 
     if lastNoticeNum >= maxNoticeNum:
         print("최신 공지사항입니다.")
         return
-    
+
     for notice in notices:
         num = notice.find("td", {"class": "td-num"}).text
         href = notice.find("td", {"class": "td-subject"}).find("a").get("href")
@@ -116,7 +130,15 @@ def get_notice_school():
         print("noticeDate: ", noticeDate)
         print("")
         print("")
-        notice = Notice(title, hrefNum, href, author, noticeDate, noticeType["school"], sources["school"]["knou"])
+        notice = Notice(
+            title,
+            hrefNum,
+            href,
+            author,
+            noticeDate,
+            noticeType["school"],
+            sources["school"]["knou"],
+        )
         print("notice: ", notice)
         if insert_query(notice):
             print("insert_query success")
@@ -147,7 +169,7 @@ def get_notice_regional_school(region):
     if lastNoticeNum >= maxNoticeNum:
         print("최신 공지사항입니다.")
         return
-    
+
     for notice in notices:
         num = notice.find("td", {"class": "td-num"}).text
         href = notice.find("td", {"class": "td-subject"}).find("a").get("href")
@@ -164,7 +186,15 @@ def get_notice_regional_school(region):
         print("noticeDate: ", noticeDate)
         print("")
         print("")
-        notice = Notice(title, hrefNum, href, author, noticeDate, noticeType["regional_school"], region)
+        notice = Notice(
+            title,
+            hrefNum,
+            href,
+            author,
+            noticeDate,
+            noticeType["regional_school"],
+            region,
+        )
         if insert_query(notice):
             print("insert_query success")
         else:
@@ -177,7 +207,9 @@ def get_notice_department(department):
     print("방통대 학과 공지사항")
     print()
     req = requests.get(
-        "https://www.knou.ac.kr/{departmentName}/{departmentNum}/subview.do?epTicket=LOG".format(departmentName=department[0], departmentNum=department[1])
+        "https://www.knou.ac.kr/{departmentName}/{departmentNum}/subview.do?epTicket=LOG".format(
+            departmentName=department[0], departmentNum=department[1]
+        )
     )
     html = req.text
     soup = BS(html, "html.parser").find("tbody")
@@ -210,7 +242,15 @@ def get_notice_department(department):
         print("noticeDate: ", noticeDate)
         print("")
         print("")
-        notice = Notice(title, num, href, author, noticeDate, noticeType["department"], department[0])
+        notice = Notice(
+            title,
+            num,
+            href,
+            author,
+            noticeDate,
+            noticeType["department"],
+            department[0],
+        )
         if insert_query(notice):
             print("insert_query success")
         else:
@@ -227,9 +267,11 @@ if __name__ == "__main__":
 
         while True:
             get_notice_school()  # 방통대 공지사항
-            get_notice_regional_school(sources["regional_school"]["seoul"])  # 방통대 지역대학 공지사항
+            get_notice_regional_school(
+                sources["regional_school"]["seoul"]
+            )  # 방통대 지역대학 공지사항
             get_notice_department(sources["department"]["cs"])  # 방통대 학과 공지사항
-            
+
             print()
             print("=====================================")
             print()
