@@ -121,29 +121,30 @@ def get_notice_school():
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
-
-        print("Title: ", title)
-        print("Num: ", num)
-        print("href: ", href)
-        print("hrefNum: ", hrefNum)
-        print("author: ", author)
-        print("noticeDate: ", noticeDate)
-        print("")
-        print("")
-        notice = Notice(
-            title,
-            hrefNum,
-            href,
-            author,
-            noticeDate,
-            noticeType["school"],
-            sources["school"]["knou"],
-        )
-        print("notice: ", notice)
-        if insert_query(notice):
-            print("insert_query success")
-        else:
-            print("insert_query fail")
+        
+        if hrefNum > lastNoticeNum:
+          print("Title: ", title)
+          print("Num: ", num)
+          print("href: ", href)
+          print("hrefNum: ", hrefNum)
+          print("author: ", author)
+          print("noticeDate: ", noticeDate)
+          print("")
+          print("")
+          notice = Notice(
+              title,
+              hrefNum,
+              href,
+              author,
+              noticeDate,
+              noticeType["school"],
+              sources["school"]["knou"],
+          )
+          print("notice: ", notice)
+          if insert_query(notice):
+              print("insert_query success")
+          else:
+              print("insert_query fail")
 
 
 def get_notice_regional_school(region):
@@ -158,7 +159,6 @@ def get_notice_regional_school(region):
     )
     html = req.text
     soup = BS(html, "html.parser").find("tbody")
-    checkList = []
 
     notices = soup.find_all("tr", {"class": ""})
     notices.sort(key=lambda x: x.find("td", {"class": "td-num"}).text, reverse=True)
@@ -177,28 +177,29 @@ def get_notice_regional_school(region):
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
-        checkList.append([num, title, author, noticeDate, href])
-        print("Title: ", title)
-        print("Num: ", num)
-        print("href: ", href)
-        print("hrefNum: ", hrefNum)
-        print("author: ", author)
-        print("noticeDate: ", noticeDate)
-        print("")
-        print("")
-        notice = Notice(
-            title,
-            hrefNum,
-            href,
-            author,
-            noticeDate,
-            noticeType["regional_school"],
-            region,
-        )
-        if insert_query(notice):
-            print("insert_query success")
-        else:
-            print("insert_query fail")
+
+        if hrefNum > lastNoticeNum:
+          print("Title: ", title)
+          print("Num: ", num)
+          print("href: ", href)
+          print("hrefNum: ", hrefNum)
+          print("author: ", author)
+          print("noticeDate: ", noticeDate)
+          print("")
+          print("")
+          notice = Notice(
+              title,
+              hrefNum,
+              href,
+              author,
+              noticeDate,
+              noticeType["regional_school"],
+              region,
+          )
+          if insert_query(notice):
+              print("insert_query success")
+          else:
+              print("insert_query fail")
 
 
 def get_notice_department(department):
@@ -213,7 +214,6 @@ def get_notice_department(department):
     )
     html = req.text
     soup = BS(html, "html.parser").find("tbody")
-    checkList = []
 
     notices = soup.find_all("tr", {"class": ""})
     notices.sort(key=lambda x: x.find("td", {"class": "td-num"}).text, reverse=True)
@@ -233,28 +233,29 @@ def get_notice_department(department):
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
-        checkList.append([num, title, author, noticeDate, href])
-        print("Title: ", title)
-        print("Num: ", num)
-        print("href: ", href)
-        print("hrefNum: ", hrefNum)
-        print("author: ", author)
-        print("noticeDate: ", noticeDate)
-        print("")
-        print("")
-        notice = Notice(
-            title,
-            num,
-            href,
-            author,
-            noticeDate,
-            noticeType["department"],
-            department[0],
-        )
-        if insert_query(notice):
-            print("insert_query success")
-        else:
-            print("insert_query fail")
+
+        if hrefNum > lastNoticeNum:
+          print("Title: ", title)
+          print("Num: ", num)
+          print("href: ", href)
+          print("hrefNum: ", hrefNum)
+          print("author: ", author)
+          print("noticeDate: ", noticeDate)
+          print("")
+          print("")
+          notice = Notice(
+              title,
+              num,
+              href,
+              author,
+              noticeDate,
+              noticeType["department"],
+              department[0],
+          )
+          if insert_query(notice):
+              print("insert_query success")
+          else:
+              print("insert_query fail")
 
 
 if __name__ == "__main__":
