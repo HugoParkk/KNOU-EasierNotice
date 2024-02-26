@@ -1,9 +1,9 @@
 version: '3'
 services:
-  app:
+  main:
     container_name: app
     image: hugopark/knou-easier-notice
     expose:
       - "3000"
     ports:
-      - "3000:3000"
+      - "3000:3003"
