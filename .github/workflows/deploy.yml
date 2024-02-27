@@ -1,0 +1,51 @@
+# github repo actions display name
+name: deploy crawler by github actions and docker
+
+# event trigger
+on:
+  push:
+    branches: ["main"]
+jobs:
+  knou-notice-crawler:
+    runs-on: ubuntu-latest
+    steps: 
+      - 
+        uses: actions/checkout@v3
+      
+      - 
+        name: Setup Python
+        uses: actions/setup-python@v3
+        with: 
+          python-version: "3.9.6"
+        run: pip install -r requirements.txt
+      
+      - 
+        name: Setup Docker QEMU
+        uses: docker/setup-qemu-action@v3
+      
+      - 
+        name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - 
+        name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - 
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/knou-notice-crawler:latest
+      
+      - 
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
+
+
