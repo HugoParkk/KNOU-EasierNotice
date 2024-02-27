@@ -2,7 +2,7 @@ version: '3'
 services:
   main:
     container_name: app
-    image: hugopark/knou-easier-notice
+    image: hugopark/knou-notice-crawler:latest
     expose:
       - "3000"
     ports:
