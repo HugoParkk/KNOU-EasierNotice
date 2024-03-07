@@ -42,7 +42,7 @@ jobs:
         name: Generate Enviroment properties file
         run:  |
           touch ./application-secret.yaml
-          echo ${{ secrets.APPLICATION_PROPERTIES }} >> ./application-secret.yaml
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" >> ./application-secret.yaml
 
       - 
         name: Build and push
