@@ -12,4 +12,6 @@ WORKDIR /app
 
 COPY . /app/
 
+CMD ["ls -la /app"]
+
 CMD ["python", "main.py"]
