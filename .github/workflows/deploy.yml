@@ -41,7 +41,7 @@ jobs:
       - 
         name: Generate Enviroment Variables File
         run: echo $APPLICATION_SECRET_ENV >> application-secret.yaml
-
+        run: cat application-secret.yaml
       - 
         name: Build and push
         id: docker_build
