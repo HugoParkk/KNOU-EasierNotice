@@ -117,7 +117,7 @@ def get_notice_school():
     for notice in notices:
         num = notice.find("td", {"class": "td-num"}).text
         href = notice.find("td", {"class": "td-subject"}).find("a").get("href")
-        hrefNum = href.split("/")[4]
+        hrefNum: int = int(href.split("/")[4])
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
@@ -173,7 +173,7 @@ def get_notice_regional_school(region):
     for notice in notices:
         num = notice.find("td", {"class": "td-num"}).text
         href = notice.find("td", {"class": "td-subject"}).find("a").get("href")
-        hrefNum = href.split("/")[4]
+        hrefNum = int(href.split("/")[4])
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
@@ -229,7 +229,7 @@ def get_notice_department(department):
     for notice in notices:
         num = notice.find("td", {"class": "td-num"}).text
         href = notice.find("td", {"class": "td-subject"}).find("a").get("href")
-        hrefNum = href.split("/")[4]
+        hrefNum = int(href.split("/")[4])
         title = notice.find("td", {"class": "td-subject"}).find("strong").text
         author = notice.find("td", {"class": "td-write"}).text.strip()
         noticeDate = notice.find("td", {"class": "td-date"}).text
