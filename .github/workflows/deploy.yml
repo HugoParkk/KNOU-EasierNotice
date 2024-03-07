@@ -39,6 +39,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - 
+        name: Generate Enviroment Variables File
+        run: |
+        echo $APPLICATION_SECRET_ENV >> application-secret.yaml
+
+      - 
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
