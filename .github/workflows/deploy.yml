@@ -39,12 +39,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - 
-        name: Generate Enviroment Variables File
-        run: echo $APPLICATION_SECRET_ENV >> application-secret.yaml
-        
-      - 
-        name: Env File
-        run: cat application-secret.yaml
+        name: Generate Enviroment properties file
+        run:  |
+          touch ./application-secret.yaml
+          echo ${{ secrets.APPLICATION_PROPERTIES }} >> ./application-secret.yaml
 
       - 
         name: Build and push
