@@ -280,7 +280,7 @@ if __name__ == "__main__":
             print("END")
             print()
             print()
-            time.sleep(600)
+            time.sleep(1200)
     except Exception as e:
         print("크롤러를 실행하는데 문제가 발생했습니다.")
         print(e)
