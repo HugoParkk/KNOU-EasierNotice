@@ -1,6 +1,9 @@
 import yaml
 import pymysql
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 class DbConnect:
   def __init__(self):
@@ -12,6 +15,12 @@ class DbConnect:
       self.host = dbConfig['db']['host']
       self.port = dbConfig['db']['port']
       self.dbName = dbConfig['db']['dbName']
+
+      self.dbUrl = f"mysql+pymysql://{self.userName}:{self.password}@{self.host}:{self.port}/{self.dbName}?charset=utf8"
+
+      self.engine = create_engine(self.dbUrl, echo=True)
+      self.sessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+      self.base = declarative_base()
 
       self.conn = pymysql.connect(host=self.host, port=self.port, user=self.userName, password=self.password, db=self.dbName, charset='utf8')
 
