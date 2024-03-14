@@ -5,17 +5,17 @@ import datetime
 from bs4 import BeautifulSoup as BS
 from fastapi import FastAPI
 
-from dbConnect import DbConnect
 from notice import Notice
+from controller.noticeController import router as noticeRouter
 
-
-# conn = DbConnect()
 app = FastAPI()
+routes = app.routes
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+app.include_router(noticeRouter)
 # # TODO: 아래의 두개의 Type을 외부로 빼내야함
 # noticeType = {
 #     "school": "SCHOOL",
