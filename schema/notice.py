@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+import datetime
 
 class NoticeCreateItem(BaseModel):
   num: int = Field(..., example=1)
@@ -15,7 +16,7 @@ class NoticeSelectItem(BaseModel):
   title: str
   href: str
   author: str
-  noticeDate: str
+  noticeDate: datetime.date
   type: str
   source: str
 
