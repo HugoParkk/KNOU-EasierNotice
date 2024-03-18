@@ -17,24 +17,24 @@ def read_root():
 
 app.include_router(noticeRouter)
 # # TODO: 아래의 두개의 Type을 외부로 빼내야함
-# noticeType = {
-#     "school": "SCHOOL",
-#     "regional_school": "REGIONAL",
-#     "department": "DEPARTMENT",
-# }
+noticeType = {
+    "school": "SCHOOL",
+    "regional_school": "REGIONAL",
+    "department": "DEPARTMENT",
+}
 
-# sources = {
-#     "school": {
-#         "knou": "knou",
-#     },
-#     "regional_school": {
-#         "seoul": "2141",
-#         "busan": "2142",
-#     },
-#     "department": {
-#         "cs": ["cs1", "4812"],
-#     },
-# }
+sources = {
+    "school": {
+        "knou": "knou",
+    },
+    "regional_school": {
+        "seoul": "2141",
+        "busan": "2142",
+    },
+    "department": {
+        "cs": ["cs1", "4812"],
+    },
+}
 
 
 # def select_last_notice(source):
